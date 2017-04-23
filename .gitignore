@@ -240,3 +240,8 @@ ModelManifest.xml
 
 # FAKE - F# Make
 .fake/
+
+# App Data
+Uonic.Umbraco/App_Data/*
+!Uonic.Umbraco/App_Data/packages/*
+!Uonic.Umbraco/App_Data/Umbraco.sdf
