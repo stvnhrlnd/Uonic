@@ -1,24 +1,18 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
-using UmbracoIdentity;
-using Uonic.Umbraco.Models.UmbracoIdentity;
-using Uonic.Umbraco;
 using Owin;
+using System;
 using Umbraco.Web;
 using Umbraco.Web.Security.Identity;
-using UmbracoIdentity.Models;
+using UmbracoIdentity;
+using Uonic.Umbraco;
+using Uonic.Umbraco.Models.UmbracoIdentity;
 
 [assembly: OwinStartup("UmbracoIdentityStartup", typeof(UmbracoIdentityStartup))]
 
 namespace Uonic.Umbraco
 {
-
     /// <summary>
     /// OWIN Startup class for UmbracoIdentity 
     /// </summary>
@@ -45,7 +39,7 @@ namespace Uonic.Umbraco
         /// <param name="app"/>
         protected override void ConfigureMiddleware(IAppBuilder app)
         {
-            //Ensure owin is configured for Umbraco back office authentication. If you have any front-end OWIN
+            // Ensure owin is configured for Umbraco back office authentication. If you have any front-end OWIN
             // cookie configuration, this must be declared after it.
             app
                 .UseUmbracoBackOfficeCookieAuthentication(ApplicationContext, PipelineStage.Authenticate)
@@ -90,14 +84,10 @@ namespace Uonic.Umbraco
             //  clientId: "",
             //  clientSecret: ""); 
 
-
-
-
-            //Lasty we need to ensure that the preview Middleware is registered, this must come after
+            // Lasty we need to ensure that the preview Middleware is registered, this must come after
             // all of the authentication middleware:
             app.UseUmbracoPreviewAuthentication(ApplicationContext, PipelineStage.Authorize);
         }
-
     }
 }
 
