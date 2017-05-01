@@ -1,10 +1,12 @@
 ﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using Umbraco.Web.Models;
 using Umbraco.Web.WebApi;
 using UmbracoIdentity;
 using Uonic.Umbraco.Models;
@@ -40,7 +42,16 @@ namespace Uonic.Umbraco.Controllers
                 return BadRequest(ModelState);
             }
 
-            var user = new UmbracoApplicationMember { UserName = model.Email, Email = model.Email };
+            var user = new UmbracoApplicationMember
+            {
+                UserName = model.Email,
+                Email = model.Email,
+                MemberProperties = new List<UmbracoProperty>
+                {
+                    new UmbracoProperty { Alias = "firstName", Value = model.FirstName },
+                    new UmbracoProperty { Alias = "surname", Value = model.Surname }
+                }
+            };
             var result = await UserManager.CreateAsync(user, model.Password);
 
             if (!result.Succeeded)
