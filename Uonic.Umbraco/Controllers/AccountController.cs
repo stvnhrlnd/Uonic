@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using System.Web.Http.Cors;
 using Umbraco.Web.Models;
 using Umbraco.Web.WebApi;
 using UmbracoIdentity;
@@ -15,6 +16,7 @@ using Uonic.Umbraco.Models.UmbracoIdentity;
 namespace Uonic.Umbraco.Controllers
 {
     [Authorize]
+    [EnableCors("*", "*", "*")]
     public class AccountController : UmbracoApiController
     {
         private UmbracoMembersUserManager<UmbracoApplicationMember> _userManager;
