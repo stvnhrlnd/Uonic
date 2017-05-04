@@ -1,6 +1,7 @@
-using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using Umbraco.Web;
@@ -8,6 +9,7 @@ using Umbraco.Web.Security.Identity;
 using UmbracoIdentity;
 using Uonic.Umbraco;
 using Uonic.Umbraco.Models.UmbracoIdentity;
+using Uonic.Umbraco.Providers;
 
 [assembly: OwinStartup("UmbracoIdentityStartup", typeof(UmbracoIdentityStartup))]
 
@@ -18,6 +20,10 @@ namespace Uonic.Umbraco
     /// </summary>
     public class UmbracoIdentityStartup : UmbracoDefaultOwinStartup
     {
+        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
+
+        public static string PublicClientId { get; private set; }
+
         /// <summary>
         /// Configures services to be created in the OWIN context (CreatePerOwinContext)
         /// </summary>
@@ -26,10 +32,10 @@ namespace Uonic.Umbraco
         {
             base.ConfigureServices(app);
 
-            //Single method to configure the Identity user manager for use with Umbraco
+            // Single method to configure the Identity user manager for use with Umbraco
             app.ConfigureUserManagerForUmbracoMembers<UmbracoApplicationMember>();
 
-            //Single method to configure the Identity user manager for use with Umbraco
+            // Single method to configure the Identity user manager for use with Umbraco
             app.ConfigureRoleManagerForUmbracoMembers<UmbracoApplicationRole>();
         }
 
@@ -45,29 +51,42 @@ namespace Uonic.Umbraco
                 .UseUmbracoBackOfficeCookieAuthentication(ApplicationContext, PipelineStage.Authenticate)
                 .UseUmbracoBackOfficeExternalCookieAuthentication(ApplicationContext, PipelineStage.Authenticate);
 
-            // Enable the application to use a cookie to store information for the 
-            // signed in user and to use a cookie to temporarily store information 
-            // about a user logging in with a third party login provider 
-            // Configure the sign in cookie
-            app.UseCookieAuthentication(new FrontEndCookieAuthenticationOptions
+            // Enable the application to use a cookie to store information for the signed in user
+            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
+            app.UseCookieAuthentication(new CookieAuthenticationOptions());
+            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+
+            // Configure the application for OAuth based flow
+            PublicClientId = "self";
+            OAuthOptions = new OAuthAuthorizationServerOptions
             {
-                Provider = new CookieAuthenticationProvider
-                {
-                    // Enables the application to validate the security stamp when the user 
-                    // logs in. This is a security feature which is used when you 
-                    // change a password or add an external login to your account.  
-                    OnValidateIdentity = SecurityStampValidator
-                        .OnValidateIdentity<UmbracoMembersUserManager<UmbracoApplicationMember>, UmbracoApplicationMember, int>(
-                            TimeSpan.FromMinutes(30),
-                            (manager, user) => user.GenerateUserIdentityAsync(manager),
-                            UmbracoIdentity.IdentityExtensions.GetUserId<int>)
-                }
-            }, PipelineStage.Authenticate);
+                TokenEndpointPath = new PathString("/Token"),
+                Provider = new ApplicationOAuthProvider(PublicClientId),
+                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                // In production mode set AllowInsecureHttp = false
+                AllowInsecureHttp = true
+            };
+
+            // Enable the application to use bearer tokens to authenticate users
+            app.UseOAuthBearerTokens(OAuthOptions);
+
+            // Configure the application for OAuth based flow
+            PublicClientId = "self";
+            OAuthOptions = new OAuthAuthorizationServerOptions
+            {
+                TokenEndpointPath = new PathString("/Token"),
+                Provider = new ApplicationOAuthProvider(PublicClientId),
+                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
+                // In production mode set AllowInsecureHttp = false
+                AllowInsecureHttp = true
+            };
+
+            // Enable the application to use bearer tokens to authenticate users
+            app.UseOAuthBearerTokens(OAuthOptions);
 
             // Uncomment the following lines to enable logging in with third party login providers
-
-            //app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-
             //app.UseMicrosoftAccountAuthentication(
             //  clientId: "",
             //  clientSecret: "");

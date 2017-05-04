@@ -7,12 +7,11 @@ namespace Uonic.Umbraco.Models.UmbracoIdentity
 {
     public class UmbracoApplicationMember : UmbracoIdentityMember
     {
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<UmbracoApplicationMember, int> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<UmbracoApplicationMember, int> manager,
+            string authenticationType)
         {
-            // Note the authenticationType must match the one 
-            // defined in CookieAuthenticationOptions.AuthenticationType
-            var userIdentity = await manager.CreateIdentityAsync(this, DefaultAuthenticationTypes.ApplicationCookie);
-
+            // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
+            var userIdentity = await manager.CreateIdentityAsync(this, authenticationType);
             // Add custom user claims here
             return userIdentity;
         }
