@@ -18,7 +18,7 @@ namespace Uonic.Umbraco.Controllers
     /// <summary>
     /// Implements operations on member accounts.
     /// </summary>
-    [Authorize]
+    [MemberAuthorize]
     [EnableCors("*", "*", "*")]
     public class AccountController : UmbracoApiController
     {
