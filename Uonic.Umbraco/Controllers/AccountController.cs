@@ -15,17 +15,26 @@ using Uonic.Umbraco.Models.UmbracoIdentity;
 
 namespace Uonic.Umbraco.Controllers
 {
+    /// <summary>
+    /// Implements operations on member accounts.
+    /// </summary>
     [Authorize]
     [EnableCors("*", "*", "*")]
     public class AccountController : UmbracoApiController
     {
         private UmbracoMembersUserManager<UmbracoApplicationMember> _userManager;
 
+        /// <summary>
+        /// The OWIN context for the current request.
+        /// </summary>
         protected IOwinContext OwinContext
         {
             get { return Request.GetOwinContext(); }
         }
 
+        /// <summary>
+        /// The user manager from the current OWIN context.
+        /// </summary>
         public UmbracoMembersUserManager<UmbracoApplicationMember> UserManager
         {
             get
@@ -35,6 +44,11 @@ namespace Uonic.Umbraco.Controllers
             }
         }
 
+        /// <summary>
+        /// Registers a new member.
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [AllowAnonymous]
         [HttpPost]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
@@ -64,6 +78,11 @@ namespace Uonic.Umbraco.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// Gets the appropriate error result for the given identity result.
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         private IHttpActionResult GetErrorResult(IdentityResult result)
         {
             if (result == null)

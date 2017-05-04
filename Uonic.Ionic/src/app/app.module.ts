@@ -6,15 +6,21 @@ import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { StatusBar } from '@ionic-native/status-bar';
 
-import { MyApp } from './app.component';
+import { AppComponent } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { AccountService } from '../providers/account-service';
 
+/**
+ * Root module.
+ * 
+ * @export
+ * @class AppModule
+ */
 @NgModule({
     declarations: [
-        MyApp,
+        AppComponent,
         HomePage,
         LoginPage,
         RegisterPage
@@ -22,19 +28,19 @@ import { AccountService } from '../providers/account-service';
     imports: [
         BrowserModule,
         HttpModule,
-        IonicModule.forRoot(MyApp)
+        IonicModule.forRoot(AppComponent)
     ],
     bootstrap: [IonicApp],
     entryComponents: [
-        MyApp,
+        AppComponent,
         HomePage,
         LoginPage,
         RegisterPage
     ],
     providers: [
+        { provide: ErrorHandler, useClass: IonicErrorHandler },
         SplashScreen,
         StatusBar,
-        { provide: ErrorHandler, useClass: IonicErrorHandler },
         AccountService
     ]
 })

@@ -5,13 +5,36 @@ import { AlertController, LoadingController, NavController, ToastController } fr
 import { AccountService } from '../../providers/account-service';
 import { RegisterModel } from '../../models/register-model';
 
+/**
+ * Displays the registration form.
+ * 
+ * @export
+ * @class RegisterPage
+ */
 @Component({
     selector: 'page-register',
     templateUrl: 'register.html'
 })
 export class RegisterPage {
+    /**
+     * The registration form model.
+     * 
+     * @type {RegisterModel}
+     * @memberof RegisterPage
+     */
     model: RegisterModel = {};
 
+    /**
+     * Creates an instance of RegisterPage.
+     * 
+     * @param {AlertController} alertCtrl 
+     * @param {LoadingController} loadingCtrl 
+     * @param {NavController} navCtrl 
+     * @param {ToastController} toastCtrl 
+     * @param {AccountService} accountService 
+     * 
+     * @memberof RegisterPage
+     */
     constructor(
         private alertCtrl: AlertController,
         private loadingCtrl: LoadingController,
@@ -20,7 +43,14 @@ export class RegisterPage {
         private accountService: AccountService) {
     }
 
+    /**
+     * Attempts to register the member.
+     * 
+     * 
+     * @memberof RegisterPage
+     */
     register() {
+        // Show loading animation while waiting on API
         let loader = this.loadingCtrl.create({
             content: "Creating account..."
         });
@@ -28,9 +58,10 @@ export class RegisterPage {
 
         this.accountService.register(this.model)
             .then(() => {
-                this.navCtrl.pop();
-
                 loader.dismiss();
+
+                // Return to previous page and show a success message
+                this.navCtrl.pop();
 
                 let toast = this.toastCtrl.create({
                     message: 'Account created.',
@@ -42,6 +73,7 @@ export class RegisterPage {
             .catch(error => {
                 loader.dismiss();
 
+                // Get errors from API response and display them in an alert
                 let errors = [];
                 let responseBody = JSON.parse(error._body);
                 if (responseBody.ModelState) {
