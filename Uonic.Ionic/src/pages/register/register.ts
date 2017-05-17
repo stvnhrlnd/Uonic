@@ -52,7 +52,7 @@ export class RegisterPage {
     register() {
         // Show loading animation while waiting on API
         let loader = this.loadingCtrl.create({
-            content: "Creating account..."
+            content: 'Creating account...'
         });
         loader.present();
 
