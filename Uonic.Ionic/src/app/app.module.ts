@@ -11,10 +11,11 @@ import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
 import { RegisterPage } from '../pages/register/register';
 import { AccountService } from '../providers/account-service';
+import { LocalStorageService } from '../providers/local-storage-service';
 
 /**
  * Root module.
- * 
+ *
  * @export
  * @class AppModule
  */
@@ -41,7 +42,8 @@ import { AccountService } from '../providers/account-service';
         { provide: ErrorHandler, useClass: IonicErrorHandler },
         SplashScreen,
         StatusBar,
-        AccountService
+        AccountService,
+        LocalStorageService
     ]
 })
 export class AppModule { }
