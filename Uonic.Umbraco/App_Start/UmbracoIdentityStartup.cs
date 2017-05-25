@@ -61,12 +61,12 @@ namespace Uonic.Umbraco
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
 
             // Configure the application for OAuth based flow
-            PublicClientId = "self";
+            PublicClientId = "uonic";
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),
                 Provider = new ApplicationOAuthProvider(PublicClientId),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
+                AuthorizeEndpointPath = new PathString("/Umbraco/Api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 // In production mode set AllowInsecureHttp = false
                 AllowInsecureHttp = true
@@ -77,20 +77,20 @@ namespace Uonic.Umbraco
 
             // Uncomment the following lines to enable logging in with third party login providers
             //app.UseMicrosoftAccountAuthentication(
-            //  clientId: "",
-            //  clientSecret: "");
+            //    clientId: "",
+            //    clientSecret: "");
 
             //app.UseTwitterAuthentication(
-            //  consumerKey: "",
-            //  consumerSecret: "");
+            //    consumerKey: "",
+            //    consumerSecret: "");
 
             //app.UseFacebookAuthentication(
-            //  appId: "",
-            //  appSecret: "");
+            //    appId: "",
+            //    appSecret: "");
 
             //app.UseGoogleAuthentication(
-            //  clientId: "",
-            //  clientSecret: ""); 
+            //    clientId: "",
+            //    clientSecret: "");
 
             // Lasty we need to ensure that the preview Middleware is registered, this must come after
             // all of the authentication middleware:
