@@ -25,7 +25,7 @@ namespace Uonic.Umbraco.Controllers
     /// <summary>
     /// Implements operations on member accounts.
     /// </summary>
-    [MemberAuthorize]
+    [Authorize]
     public class AccountController : UmbracoApiController
     {
         private UmbracoMembersUserManager<UmbracoApplicationMember> _userManager;
@@ -48,6 +48,23 @@ namespace Uonic.Umbraco.Controllers
                 return _userManager ?? (_userManager = OwinContext
                     .GetUserManager<UmbracoMembersUserManager<UmbracoApplicationMember>>());
             }
+        }
+
+        /// <summary>
+        /// Gets basic information about the current user.
+        /// </summary>
+        /// <returns></returns>
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [HttpGet]
+        public UserInfoViewModel UserInfo()
+        {
+            var externalLogin = ExternalLoginData.FromIdentity(User.Identity as ClaimsIdentity);
+            return new UserInfoViewModel
+            {
+                Email = User.Identity.GetUserName(),
+                HasRegistered = externalLogin == null,
+                LoginProvider = externalLogin != null ? externalLogin.LoginProvider : null
+            };
         }
 
         /// <summary>
