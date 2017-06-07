@@ -18,20 +18,16 @@
     <button ion-button block (click)="logIn()">Log In</button>
     <p>Forgot your password?</p>
 
-    <div class="hr"><span>OR</span></div>
+    <div *ngIf="externalLogins.length">
+        <div class="hr"><span>OR</span></div>
 
-    <button ion-button block icon-left clear class="facebook">
-        <ion-icon name="logo-facebook"></ion-icon>
-        Continue with Facebook
-    </button>
-    <button ion-button block icon-left clear class="google">
-        <ion-icon name="logo-google"></ion-icon>
-        Continue with Google
-    </button>
-    <button ion-button block icon-left clear class="twitter">
-        <ion-icon name="logo-twitter"></ion-icon>
-        Continue with Twitter
-    </button>
+        <div *ngFor="let login of externalLogins" class="{{login.Name.toLowerCase()}}">
+            <button ion-button block icon-left clear (click)="externalLogin(login)">
+                <ion-icon name="logo-{{login.Name.toLowerCase()}}"></ion-icon>
+                Continue with {{login.Name}}
+            </button>
+        </div>
+    </div>
 </ion-content>
 
 <ion-footer>

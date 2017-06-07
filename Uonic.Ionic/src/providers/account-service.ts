@@ -25,6 +25,8 @@ export class AccountService {
      */
     private baseURL = 'http://localhost:53815/';
 
+    private accountAPI = `${this.baseURL}Umbraco/Api/Account/`;
+
     /**
      * The key used to store identity information in local storage.
      *
@@ -43,6 +45,24 @@ export class AccountService {
      * @memberof AccountService
      */
     constructor(private http: Http, private localStorageService: LocalStorageService) {
+    }
+
+    /**
+     * Gets the external login providers enabled in the back-end application.
+     * 
+     * @returns {Promise<any>} 
+     * 
+     * @memberof AccountService
+     */
+    externalLogins(): Promise<any> {
+        let searchParams = new URLSearchParams();
+        searchParams.set('returnUrl', '/');
+        searchParams.set('generateState', 'true');
+        return this.http
+            .get(`${this.accountAPI}ExternalLogins`, { search: searchParams })
+            .toPromise()
+            .then(response => response.json())
+            .catch(this.handleError);
     }
 
     /**
@@ -108,7 +128,7 @@ export class AccountService {
      */
     register(model: RegisterModel): Promise<any> {
         return this.http
-            .post(`${this.baseURL}Umbraco/Api/Account/Register`, model)
+            .post(`${this.accountAPI}Register`, model)
             .toPromise()
             .catch(this.handleError);
     }

@@ -19,6 +19,14 @@ import { RegisterPage } from '../register/register';
 })
 export class LoginPage {
     /**
+     * The external logins enabled for the application.
+     *
+     *
+     * @memberof LoginPage
+     */
+    externalLogins = [];
+
+    /**
      * The login form model.
      *
      * @type {LoginModel}
@@ -43,6 +51,28 @@ export class LoginPage {
         private navCtrl: NavController,
         private toastCtrl: ToastController,
         private accountService: AccountService) {
+    }
+
+    /**
+     * Gets the available external logins from the server.
+     *
+     *
+     * @memberof LoginPage
+     */
+    ionViewDidLoad() {
+        this.accountService.externalLogins()
+            .then(externalLogins => this.externalLogins = externalLogins);
+    }
+
+    /**
+     * Starts the external login process.
+     *
+     * @param {any} login - The external provider.
+     *
+     * @memberof LoginPage
+     */
+    externalLogin(login) {
+        // TODO
     }
 
     /**
