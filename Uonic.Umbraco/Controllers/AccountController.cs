@@ -210,6 +210,7 @@ namespace Uonic.Umbraco.Controllers
         }
 
         /// <summary>
+        /// Registers a member who used an external provider to log in.
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
