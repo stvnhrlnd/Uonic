@@ -209,6 +209,47 @@ namespace Uonic.Umbraco.Controllers
             return Ok();
         }
 
+        /// <summary>
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [OverrideAuthentication]
+        [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
+        [HttpPost]
+        public async Task<IHttpActionResult> RegisterExternal(RegisterExternalBindingModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var info = await Authentication.GetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                return InternalServerError();
+            }
+
+            var user = new UmbracoApplicationMember()
+            {
+                UserName = model.Email,
+                Email = model.Email
+            };
+
+            var result = await UserManager.CreateAsync(user);
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            result = await UserManager.AddLoginAsync(user.Id, info.Login);
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
+            return Ok();
+        }
+
         private IAuthenticationManager Authentication
         {
             get { return Request.GetOwinContext().Authentication; }
