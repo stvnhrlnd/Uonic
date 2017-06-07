@@ -199,8 +199,8 @@ namespace Uonic.Umbraco.Controllers
                     new UmbracoProperty { Alias = "surname", Value = model.Surname }
                 }
             };
+ 
             var result = await UserManager.CreateAsync(user, model.Password);
-
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -272,7 +272,7 @@ namespace Uonic.Umbraco.Controllers
             {
                 if (result.Errors != null)
                 {
-                    foreach (string error in result.Errors)
+                    foreach (var error in result.Errors)
                     {
                         ModelState.AddModelError("", error);
                     }
@@ -298,9 +298,10 @@ namespace Uonic.Umbraco.Controllers
 
             public IList<Claim> GetClaims()
             {
-                var claims = new List<Claim>();
-                claims.Add(new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider));
-
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, ProviderKey, null, LoginProvider)
+                };
                 if (UserName != null)
                 {
                     claims.Add(new Claim(ClaimTypes.Name, UserName, null, LoginProvider));
@@ -318,8 +319,8 @@ namespace Uonic.Umbraco.Controllers
 
                 var providerKeyClaim = identity.FindFirst(ClaimTypes.NameIdentifier);
 
-                if (providerKeyClaim == null || String.IsNullOrEmpty(providerKeyClaim.Issuer)
-                    || String.IsNullOrEmpty(providerKeyClaim.Value))
+                if (providerKeyClaim == null || string.IsNullOrEmpty(providerKeyClaim.Issuer)
+                    || string.IsNullOrEmpty(providerKeyClaim.Value))
                 {
                     return null;
                 }
