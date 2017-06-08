@@ -25,6 +25,13 @@ export class AccountService {
      */
     private baseURL = 'http://localhost:53815/';
 
+    /**
+     * Base URL for account API calls.
+     *
+     * @private
+     *
+     * @memberof AccountService
+     */
     private accountAPI = `${this.baseURL}Umbraco/Api/Account/`;
 
     /**
