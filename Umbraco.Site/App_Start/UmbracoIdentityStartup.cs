@@ -2,6 +2,7 @@
 using Microsoft.Owin;
 using Microsoft.Owin.Cors;
 using Microsoft.Owin.Security.Cookies;
+using Microsoft.Owin.Security.Facebook;
 using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
@@ -84,9 +85,12 @@ namespace Umbraco.Site
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //app.UseFacebookAuthentication(
-            //    appId: "",
-            //    appSecret: "");
+            //app.UseFacebookAuthentication(new FacebookAuthenticationOptions()
+            //{
+            //    AppId = "",
+            //    AppSecret = "",
+            //    UserInformationEndpoint = "https://graph.facebook.com/v2.9/me?fields=id,name,email"
+            //});
 
             //app.UseGoogleAuthentication(
             //    clientId: "",
