@@ -38,6 +38,13 @@ namespace Umbraco.Site.Controllers
             }
         }
 
+        [AllowAnonymous]
+        [HttpGet]
+        public bool LocalLoginEnabled()
+        {
+            return AppSettings.EnableLocalLogin;
+        }
+
         [HostAuthentication(DefaultAuthenticationTypes.ExternalBearer)]
         [HttpGet]
         public UserInfoViewModel UserInfo()
@@ -215,6 +222,11 @@ namespace Umbraco.Site.Controllers
         [HttpPost]
         public async Task<IHttpActionResult> Register(RegisterBindingModel model)
         {
+            if (!AppSettings.EnableLocalLogin)
+            {
+                return Unauthorized();
+            }
+
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);

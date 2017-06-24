@@ -26,6 +26,11 @@ namespace Umbraco.Site.Providers
 
         public override async Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
+            if (!AppSettings.EnableLocalLogin)
+            {
+                return;
+            }
+
             var userManager = context.OwinContext.GetUserManager<UmbracoMembersUserManager<UmbracoApplicationMember>>();
             var user = await userManager.FindAsync(context.UserName, context.Password);
             if (user == null)

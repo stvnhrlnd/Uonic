@@ -8,6 +8,7 @@ namespace Umbraco.Site
 {
     public class AppSettings
     {
+        public static bool EnableLocalLogin => ConfigurationManager.AppSettings["EnableLocalLogin"] == "true";
         public static string FacebookAppId => ConfigurationManager.AppSettings["FacebookAppId"];
         public static string FacebookAppSecret => ConfigurationManager.AppSettings["FacebookAppSecret"];
         public static string GoogleClientId => ConfigurationManager.AppSettings["GoogleClientId"];
