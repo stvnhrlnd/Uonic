@@ -85,16 +85,24 @@ namespace Umbraco.Site
             //    consumerKey: "",
             //    consumerSecret: "");
 
-            //app.UseFacebookAuthentication(new FacebookAuthenticationOptions()
-            //{
-            //    AppId = "",
-            //    AppSecret = "",
-            //    UserInformationEndpoint = "https://graph.facebook.com/v2.9/me?fields=id,name,email"
-            //});
+            if (!string.IsNullOrWhiteSpace(AppSettings.FacebookAppId) &&
+                !string.IsNullOrWhiteSpace(AppSettings.FacebookAppSecret))
+            {
+                app.UseFacebookAuthentication(new FacebookAuthenticationOptions()
+                {
+                    AppId = AppSettings.FacebookAppId,
+                    AppSecret = AppSettings.FacebookAppSecret,
+                    UserInformationEndpoint = "https://graph.facebook.com/v2.9/me?fields=id,name,email"
+                });
+            }
 
-            //app.UseGoogleAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
+            if (!string.IsNullOrWhiteSpace(AppSettings.GoogleClientId) &&
+                !string.IsNullOrWhiteSpace(AppSettings.GoogleClientSecret))
+            {
+                app.UseGoogleAuthentication(
+                    clientId: AppSettings.GoogleClientId,
+                    clientSecret: AppSettings.GoogleClientSecret);
+            }
 
             // Lasty we need to ensure that the preview Middleware is registered, this must come after
             // all of the authentication middleware:
