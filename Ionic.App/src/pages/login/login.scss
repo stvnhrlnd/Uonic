@@ -1,0 +1,33 @@
+page-login {
+    .facebook>button {
+        color: #3b5998;
+    }
+    .google>button {
+        color: #db3236;
+    }
+    .hr {
+        margin: 30px 0;
+        overflow: hidden;
+    }
+    .hr>span {
+        font-weight: bold;
+        position: relative;
+    }
+    .hr>span:before,
+    .hr>span:after {
+        background: color($colors, dark);
+        content: "";
+        height: 1px;
+        position: absolute;
+        top: 50%;
+        width: 9999px;
+    }
+    .hr>span:before {
+        margin-right: 15px;
+        right: 100%;
+    }
+    .hr>span:after {
+        margin-left: 15px;
+        left: 100%;
+    }
+}
