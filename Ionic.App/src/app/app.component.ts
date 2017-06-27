@@ -65,6 +65,9 @@ export class AppComponent {
      * @memberof AppComponent
      */
     logOut() {
-        // TODO
+        this.accountService.logOut()
+            .then(() => {
+                this.nav.setRoot(LoginPage);
+            });
     }
 }

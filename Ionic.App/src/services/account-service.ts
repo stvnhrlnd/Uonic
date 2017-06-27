@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, URLSearchParams } from '@angular/http';
+import { Headers, Http, URLSearchParams } from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
 import * as moment from 'moment';
@@ -110,6 +110,28 @@ export class AccountService {
                 let expires = moment().add(responseObject.expires_in, 'seconds');
                 this.localStorageService.setItem('accessToken', responseObject.access_token);
                 this.localStorageService.setItem('accessTokenExpires', expires.toISOString());
+                return response;
+            })
+            .catch(this.handleError);
+    }
+
+    /**
+     * Logs the current member out.
+     *
+     * @returns {Promise<any>}
+     *
+     * @memberof AccountService
+     */
+    logOut(): Promise<any> {
+        let accessToken = this.localStorageService.getItem('accessToken');
+        let headers = new Headers();
+        headers.append('Authorization', `Bearer ${accessToken}`);
+        return this.http
+            .post(`${this.baseURL}/Logout`, {}, { headers: headers })
+            .toPromise()
+            .then(response => {
+                this.localStorageService.removeItem('accessToken');
+                this.localStorageService.removeItem('accessTokenExpires');
                 return response;
             })
             .catch(this.handleError);
